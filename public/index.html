@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to Markdown</title>
+    <style>
+        /* Optional: Add some basic styling for better presentation */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/convert" method="post" enctype="multipart/form-data">
+        <input type="file" name="excelFile" required>
+        <input type="submit" value="Convert">
+    </form>
+    <div id="output"></div> <!-- Use a div to insert the rendered HTML -->
+
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/convert', {
+                method: 'POST',
+                body: formData
+            });
+            const renderedMarkdown = await response.text();
+            document.getElementById('output').innerHTML = renderedMarkdown; // Set the innerHTML to display the rendered content
+        });
+    </script>
+</body>
+</html>
